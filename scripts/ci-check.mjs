@@ -47,7 +47,8 @@ const js = existsSync(join(ROOT, "script.js")) ? read("script.js") : "";
 // ---------- CNAME / branding ----------
 if (html) {
   const cname = read("CNAME").trim();
-  assert(cname === "relax.bytehackr.in", `CNAME should be relax.bytehackr.in, got "${cname}"`);
+  assert(cname === "radio.bytehackr.in", `CNAME should be radio.bytehackr.in, got "${cname}"`);
+  assert(html.includes("https://radio.bytehackr.in/"), "canonical / Open Graph URL should be radio.bytehackr.in");
   assert(/ByteHackr/i.test(html), "index.html should mention ByteHackr");
   assert(/<title>[^<]*ByteHackr/i.test(html), "document title should include ByteHackr");
   assert(/name="description"/.test(html), "missing meta description");
@@ -228,16 +229,28 @@ for (const id of jsDomIds) {
 
 // ---------- GitHub links ----------
 assert(
-  html.includes("https://github.com/bytehackr/relax.bytehackr.in") ||
-    html.includes("https://github.com/ByteHackr/relax.bytehackr.in"),
+  html.includes("https://github.com/bytehackr/radio.bytehackr.in") ||
+    html.includes("https://github.com/ByteHackr/radio.bytehackr.in"),
   "GitHub source links are missing or point at the wrong repo"
 );
+
+const selectBlock = html.match(/<select id="stationSelect"[\s\S]*?<\/select>/);
+assert(!!selectBlock, "station select is missing");
+if (selectBlock) {
+  const liveAt = selectBlock[0].indexOf('optgroup label="Live radio"');
+  const musicAt = selectBlock[0].indexOf('optgroup label="Music"');
+  assert(liveAt >= 0 && musicAt >= 0 && liveAt < musicAt, "Live radio should be the first Explore stations group");
+}
+const firstPillGroup = html.match(/id="stationPills"[\s\S]*?data-group="([^"]+)"/);
+assert(firstPillGroup && firstPillGroup[1] === "live", "first station pill row should be live radio");
 
 const readme = existsSync(join(ROOT, "README.md")) ? read("README.md") : "";
 assert(readme.includes("scripts/add-tracks.sh"), "README.md should document scripts/add-tracks.sh");
 assert(readme.includes("--dry-run"), "README.md should mention --dry-run for add-tracks");
 assert(readme.includes("--new"), "README.md should mention creating a station with --new");
 assert(readme.includes("radio-browser"), "README.md should document live radio via radio-browser");
+assert(readme.includes("radio.bytehackr.in"), "README.md should use the radio.bytehackr.in domain");
+assert(readme.includes("github.com/ByteHackr/radio.bytehackr.in"), "README.md should link to the radio.bytehackr.in GitHub repo");
 
 console.log(`\n  stations     ${stationKeys.length}`);
 console.log(`  tracks       ${[...idCounts.values()].reduce((a, b) => a + b, 0)}`);

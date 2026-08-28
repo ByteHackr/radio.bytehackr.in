@@ -18,7 +18,7 @@ const INDEX_HTML = join(ROOT, "index.html");
 const KEY_RE = /^[a-z][a-z0-9]{0,23}$/;
 const YT_ID_RE = /^[A-Za-z0-9_-]{11}$/;
 const UA =
-  "Mozilla/5.0 (compatible; ByteHackrRadio/1.0; +https://relax.bytehackr.in)";
+  "Mozilla/5.0 (compatible; ByteHackrRadio/1.0; +https://radio.bytehackr.in)";
 
 const HELP = `Add a YouTube song or playlist to ByteHackr's Radio.
 

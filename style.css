@@ -719,6 +719,8 @@ select:focus-visible {
 
 .playlist-toggle {
   display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 7px;
   flex-shrink: 0;
@@ -1006,15 +1008,21 @@ select:focus-visible {
   font-weight: 600;
 }
 
+.playlist-tab-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
 .playlist-tabs {
   display: flex;
   gap: 8px;
-  margin-bottom: 14px;
   overflow-x: auto;
   flex-wrap: nowrap;
   scrollbar-width: none; /* Hide scrollbars for Firefox */
   -webkit-overflow-scrolling: touch;
-  padding: 2px 2px 6px;
+  padding: 2px 2px 4px;
 }
 
 .playlist-tabs::-webkit-scrollbar {

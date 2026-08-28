@@ -2,13 +2,13 @@
   "name": "bytehackr-radio",
   "private": true,
   "description": "ByteHackr’s Radio — static internet radio for Bengali & Hindi retro, devotionals, and the Bhagavad Gita.",
-  "homepage": "https://relax.bytehackr.in",
+  "homepage": "https://radio.bytehackr.in",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ByteHackr/relax.bytehackr.in.git"
+    "url": "git+https://github.com/ByteHackr/radio.bytehackr.in.git"
   },
   "bugs": {
-    "url": "https://github.com/ByteHackr/relax.bytehackr.in/issues"
+    "url": "https://github.com/ByteHackr/radio.bytehackr.in/issues"
   },
   "license": "MIT",
   "scripts": {

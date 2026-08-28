@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Site integrity
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: JavaScript syntax
+        run: node --check script.js && node --check scripts/ci-check.mjs && node --check scripts/add-tracks.mjs && node --check scripts/add-tracks.test.mjs
+
+      - name: Integrity tests
+        run: node scripts/ci-check.mjs
+
+      - name: Add-tracks tests
+        run: node scripts/add-tracks.test.mjs
+
+      - name: Serve and fetch the homepage
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 &
+          pid=$!
+          trap 'kill $pid' EXIT
+          for i in $(seq 1 20); do
+            if curl -fsS -o /dev/null http://127.0.0.1:8765/; then
+              break
+            fi
+            sleep 0.25
+          done
+          curl -fsS -o /tmp/home.html http://127.0.0.1:8765/
+          grep -q "ByteHackr" /tmp/home.html
+          curl -fsS -o /dev/null -w "%{http_code}" http://127.0.0.1:8765/style.css | grep -q 200
+          curl -fsS -o /dev/null -w "%{http_code}" http://127.0.0.1:8765/script.js | grep -q 200
+          curl -fsS -o /dev/null -w "%{http_code}" http://127.0.0.1:8765/CNAME | grep -q 200

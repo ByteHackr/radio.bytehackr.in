@@ -1,25 +1,28 @@
 # ByteHackr’s Radio
 
-[![CI](https://github.com/ByteHackr/relax.bytehackr.in/actions/workflows/ci.yml/badge.svg)](https://github.com/ByteHackr/relax.bytehackr.in/actions/workflows/ci.yml)
-[![Live](https://img.shields.io/badge/live-relax.bytehackr.in-d97706)](https://relax.bytehackr.in)
+[![CI](https://github.com/ByteHackr/radio.bytehackr.in/actions/workflows/ci.yml/badge.svg)](https://github.com/ByteHackr/radio.bytehackr.in/actions/workflows/ci.yml)
+[![Live](https://img.shields.io/badge/live-radio.bytehackr.in-d97706)](https://radio.bytehackr.in)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **सर्वम् अनित्यम्** — *all things pass, songs remain.*
 
-A static internet-radio site at [relax.bytehackr.in](https://relax.bytehackr.in). Nine stations of Bengali and Hindi retro, English hits, and devotionals — including a 100-track Bhagavad Gita playlist. Playback uses the YouTube IFrame API behind a custom player. The hero photo and a Gita shloka change with each song. A live IST clock sits in the hero. Listener count comes from the free Abacus API, with a simulated fallback.
+A static internet-radio site at [radio.bytehackr.in](https://radio.bytehackr.in). Live FM plus Bengali and Hindi retro, English hits, and devotionals — including a 100-track Bhagavad Gita playlist. Playback uses the YouTube IFrame API behind a custom player. The hero photo and a Gita shloka change with each song. A live IST clock sits in the hero. Listener count comes from the free Abacus API, with a simulated fallback.
 
-[![ByteHackr’s Radio](docs/desktop.png)](https://relax.bytehackr.in)
+[![ByteHackr’s Radio](docs/desktop.png)](https://radio.bytehackr.in)
 
 ## Live
 
-- Site: https://relax.bytehackr.in
-- Source: https://github.com/ByteHackr/relax.bytehackr.in
+- Site: https://radio.bytehackr.in
+- Source: https://github.com/ByteHackr/radio.bytehackr.in
 - Pages: GitHub Pages from `main` (root), custom domain via `CNAME`
 
 ## Stations
 
 | Key | Station | Tracks |
 | --- | --- | ---: |
+| `livebengali` | 🎙️ Live • বাংলা | FM Rainbow Kolkata, Maitree, Geetanjali, FM Gold Kolkata, Mixify, My 90s Bengali |
+| `livehindi` | 🎙️ Live • हिन्दी | Radio Mirchi, Vividh Bharati, Fever 104, Ishq FM, FM Gold Delhi, Red FM |
+| `liveenglish` | 🌍 Live • English | BBC World Service, Capital FM, Heart London, Classic FM |
 | `bengali` | বাংলা • Bengali Retro | 73 |
 | `hindi` | हिन्दी • Hindi Retro | 28 |
 | `relax` | Relax Hits | 114 |
@@ -29,9 +32,6 @@ A static internet-radio site at [relax.bytehackr.in](https://relax.bytehackr.in)
 | `shiva` | 🔱 Shiva | 50 |
 | `ganesha` | 🪔 Ganesha | 5 |
 | `gita` | 📖 Gita | 100 |
-| `livebengali` | 🎙️ Live • বাংলা | Maitree, Rainbow, Geetanjali, FM Gold Kolkata, Mixify, My 90s Bengali |
-| `livehindi` | 🎙️ Live • हिन्दी | Radio Mirchi, Vividh Bharati, Fever 104, Ishq FM, FM Gold Delhi, Red FM |
-| `liveenglish` | 🌍 Live • English | BBC World Service, Capital FM, Heart London, Classic FM |
 
 515 YouTube tracks in total, plus a handful of live FM streams. Broken or unembeddable videos are skipped at runtime.
 
@@ -41,7 +41,7 @@ The **Live radio** group plays real FM/internet streams (not YouTube). Each stat
 
 Famous picks only:
 
-- **Bengali** — Akashvani Maitree, FM Rainbow Kolkata, Akashvani Geetanjali, FM Gold Kolkata, Mixify Bengali Hits, My 90s Bengali
+- **Bengali** — FM Rainbow Kolkata, Akashvani Maitree, Akashvani Geetanjali, FM Gold Kolkata, Mixify Bengali Hits, My 90s Bengali
 - **Hindi** — Radio Mirchi, Vividh Bharati, Fever 104 FM, Ishq FM, FM Gold Delhi, Red FM 93.5
 - **English** — BBC World Service, Capital FM London, Heart London, Classic FM
 
@@ -65,7 +65,7 @@ style.css                  layout and theme
 script.js                  stations, live radios, songs, backgrounds, shlokas, player
 assets/                    background photos (must stay in sync with BACKGROUNDS)
 docs/desktop.png           desktop homepage screenshot for the README
-CNAME                      custom domain relax.bytehackr.in
+CNAME                      custom domain radio.bytehackr.in
 .nojekyll                  skip Jekyll on GitHub Pages
 scripts/ci-check.mjs           integrity tests for CI
 scripts/add-tracks.sh          add a YouTube video or playlist to a station
@@ -197,7 +197,7 @@ Add an entry to the `SHLOKAS` array in `script.js`:
 1. Push to GitHub (`main`).
 2. Repo → **Settings → Pages → Deploy from a branch → main / (root) → Save**.
 3. Default URL: `https://<your-username>.github.io/<repo-name>/`.
-4. For `relax.bytehackr.in`: keep the `CNAME` file, point a DNS `CNAME` for `relax` at `<your-username>.github.io`, then set the custom domain under **Settings → Pages**.
+4. For `radio.bytehackr.in`: keep the `CNAME` file, point a DNS `CNAME` for `radio` at `<your-username>.github.io`, then set the custom domain under **Settings → Pages**.
 
 ## License
 

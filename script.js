@@ -798,10 +798,6 @@ function isLiveKey(key) {
   return Boolean(LIVE_RADIOS[key]);
 }
 
-function pickerKeys() {
-  return [...Object.keys(LIVE_RADIOS), ...Object.keys(STATIONS)];
-}
-
 function stationEntry(key) {
   return LIVE_RADIOS[key] || STATIONS[key] || null;
 }
@@ -1684,16 +1680,30 @@ muteBtn.addEventListener("click", () => {
 function renderPlaylist() {
   playlistList.innerHTML = "";
 
-  // station tabs
-  let tabs = playlistPanel.querySelector(".playlist-tabs");
-  if (!tabs) {
-    tabs = document.createElement("div");
-    tabs.className = "playlist-tabs";
-    playlistPanel.insertBefore(tabs, playlistList);
+  let groups = playlistPanel.querySelector(".playlist-tab-groups");
+  if (!groups) {
+    playlistPanel.querySelectorAll(":scope > .playlist-tabs").forEach((el) => el.remove());
+    groups = document.createElement("div");
+    groups.className = "playlist-tab-groups";
+    playlistPanel.insertBefore(groups, playlistList);
   }
-  tabs.innerHTML = "";
 
-  pickerKeys().forEach((key) => {
+  let liveTabs = groups.querySelector(".playlist-tabs-live");
+  let musicTabs = groups.querySelector(".playlist-tabs-music");
+  if (!liveTabs) {
+    liveTabs = document.createElement("div");
+    liveTabs.className = "playlist-tabs playlist-tabs-live";
+    groups.appendChild(liveTabs);
+  }
+  if (!musicTabs) {
+    musicTabs = document.createElement("div");
+    musicTabs.className = "playlist-tabs playlist-tabs-music";
+    groups.appendChild(musicTabs);
+  }
+  liveTabs.innerHTML = "";
+  musicTabs.innerHTML = "";
+
+  const addTab = (parent, key) => {
     const tab = document.createElement("button");
     tab.className = `playlist-tab${key === panelStation ? " active" : ""}`;
     tab.textContent = stationEntry(key).label;
@@ -1701,22 +1711,21 @@ function renderPlaylist() {
       panelStation = key;
       renderPlaylist();
     });
-    tabs.appendChild(tab);
-  });
+    parent.appendChild(tab);
+  };
+  Object.keys(LIVE_RADIOS).forEach((key) => addTab(liveTabs, key));
+  Object.keys(STATIONS).forEach((key) => addTab(musicTabs, key));
 
-  // Keep live radios at the start of the tab strip. Only nudge if the
-  // active tab is completely out of view (e.g. a music station further right).
-  const activeTab = tabs.querySelector(".playlist-tab.active");
+  const activeTab = groups.querySelector(".playlist-tab.active");
   if (activeTab) {
     requestAnimationFrame(() => {
+      const row = activeTab.parentElement;
       const tabLeft = activeTab.offsetLeft;
       const tabRight = tabLeft + activeTab.offsetWidth;
-      const viewLeft = tabs.scrollLeft;
-      const viewRight = viewLeft + tabs.clientWidth;
-      if (tabRight > viewRight) {
-        scrollElementTo(tabs, tabLeft - 12);
-      } else if (tabLeft < viewLeft) {
-        scrollElementTo(tabs, tabLeft - 12);
+      const viewLeft = row.scrollLeft;
+      const viewRight = viewLeft + row.clientWidth;
+      if (tabRight > viewRight || tabLeft < viewLeft) {
+        scrollElementTo(row, Math.max(0, tabLeft - 12));
       }
     });
   }
