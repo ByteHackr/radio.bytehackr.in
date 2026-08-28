@@ -243,6 +243,11 @@ if (selectBlock) {
 }
 const firstPillGroup = html.match(/id="stationPills"[\s\S]*?data-group="([^"]+)"/);
 assert(firstPillGroup && firstPillGroup[1] === "live", "first station pill row should be live radio");
+assert(
+  /<option value="livebengali" selected>/.test(html),
+  "Live Bengali should be the default selected Explore stations option"
+);
+assert(js.includes('DEFAULT_STATION = "livebengali"'), "default station should be livebengali");
 
 const readme = existsSync(join(ROOT, "README.md")) ? read("README.md") : "";
 assert(readme.includes("scripts/add-tracks.sh"), "README.md should document scripts/add-tracks.sh");

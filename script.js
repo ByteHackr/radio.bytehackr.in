@@ -776,9 +776,30 @@ const onAirLabel = document.getElementById("onAirLabel");
 
 const stationSelect = document.getElementById("stationSelect");
 
+const STATION_STORE = "radio-station";
+const DEFAULT_STATION = "livebengali";
+
+function initialStation() {
+  try {
+    const key = localStorage.getItem(STATION_STORE);
+    if (key && (LIVE_RADIOS[key] || STATIONS[key])) return key;
+  } catch (e) {
+    /* private mode */
+  }
+  return DEFAULT_STATION;
+}
+
+function rememberStation(key) {
+  try {
+    localStorage.setItem(STATION_STORE, key);
+  } catch (e) {
+    /* private mode */
+  }
+}
+
 let ytPlayer = null;
-let currentStation = "bengali";
-let panelStation = "bengali"; // which station's list the panel is showing
+let currentStation = initialStation();
+let panelStation = currentStation; // which station's list the panel is showing
 let progressTimer = null;
 let consecutiveErrors = 0;
 let started = false;
@@ -1084,6 +1105,7 @@ function startLive(key, autoplay, startIndex = 0) {
 
   stationSelect.value = key;
   syncStationPills(key);
+  rememberStation(key);
   onAirLabel.textContent = LIVE_RADIOS[key].label;
   const playlistTitleEl = document.getElementById("playlistTitle");
   if (playlistTitleEl) playlistTitleEl.textContent = `${LIVE_RADIOS[key].label}`;
@@ -1292,6 +1314,7 @@ function switchStation(key, autoplay, startIndex = 0) {
 
   stationSelect.value = key;
   syncStationPills(key);
+  rememberStation(key);
   onAirLabel.textContent = STATIONS[key].label;
   const playlistTitleEl = document.getElementById("playlistTitle");
   if (playlistTitleEl) {
@@ -1500,8 +1523,8 @@ function nextShloka() {
 // ---------- youtube api bootstrap ----------
 
 window.onYouTubeIframeAPIReady = () => {
-  shuffleBtn.classList.add("on");
   if (isLiveKey(currentStation)) return;
+  shuffleBtn.classList.add("on");
   const songs = currentSongs();
   playOrder = shuffledOrder(songs, 0);
   pendingPlayIndex = 0;
@@ -1510,9 +1533,15 @@ window.onYouTubeIframeAPIReady = () => {
 
 // first paint: set an initial background and shloka without waiting for
 // the player; pre-seed the track key so player-ready doesn't advance them
-lastTrackKey = `${currentStation}:${currentSongs()[0].id}`;
+if (isLiveKey(currentStation)) {
+  const stream = LIVE_RADIOS[currentStation].streams[0];
+  lastTrackKey = stream ? `${currentStation}:${stream.uuid}` : currentStation;
+} else {
+  lastTrackKey = `${currentStation}:${currentSongs()[0].id}`;
+}
 nextBackground();
 nextShloka();
+switchStation(currentStation, false);
 
 // preload the remaining photos in the background so song-change swaps are instant
 window.addEventListener("load", () => {

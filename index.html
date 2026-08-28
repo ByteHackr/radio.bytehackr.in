@@ -77,7 +77,7 @@
           </p>
           <p class="clock-date" id="clockDate">—</p>
           <p class="clock-tz"><span class="clock-tz-dot"></span>INDIAN STANDARD TIME</p>
-          <p class="clock-onair">On Air • <span id="onAirLabel">Bengali Retro</span></p>
+          <p class="clock-onair">On Air • <span id="onAirLabel">Live • বাংলা</span></p>
         </aside>
 
         <div class="station-select-wrap">
@@ -87,12 +87,12 @@
           </label>
           <select id="stationSelect" aria-label="Choose a station">
             <optgroup label="Live radio">
-              <option value="livebengali">🎙️ Live · বাংলা</option>
+              <option value="livebengali" selected>🎙️ Live · বাংলা</option>
               <option value="livehindi">🎙️ Live · हिन्दी</option>
               <option value="liveenglish">🌍 Live · English</option>
             </optgroup>
             <optgroup label="Music">
-              <option value="bengali" selected>বাংলা · Bengali Retro</option>
+              <option value="bengali">বাংলা · Bengali Retro</option>
               <option value="hindi">हिन्दी · Hindi Retro</option>
               <option value="relax">Relax Hits (Hindi &amp; Bengali)</option>
               <option value="english">English Hits</option>
@@ -107,12 +107,12 @@
           </select>
           <div class="station-pills" id="stationPills" aria-label="Mobile station selection chips">
             <div class="pill-row" data-group="live">
-              <button type="button" class="station-pill" data-value="livebengali">🎙️ বাংলা Live</button>
+              <button type="button" class="station-pill active" data-value="livebengali">🎙️ বাংলা Live</button>
               <button type="button" class="station-pill" data-value="livehindi">🎙️ हिन्दी Live</button>
               <button type="button" class="station-pill" data-value="liveenglish">🌍 English Live</button>
             </div>
             <div class="pill-row" data-group="music">
-              <button type="button" class="station-pill active" data-value="bengali">বাংলা • Bengali Retro</button>
+              <button type="button" class="station-pill" data-value="bengali">বাংলা • Bengali Retro</button>
               <button type="button" class="station-pill" data-value="hindi">हिन्दी • Hindi Retro</button>
               <button type="button" class="station-pill" data-value="relax">💖 Relax Hits</button>
               <button type="button" class="station-pill" data-value="english">🎵 English Hits</button>
@@ -209,6 +209,6 @@
   </footer>
 
   <script src="https://www.youtube.com/iframe_api"></script>
-  <script src="script.js?v=5"></script>
+  <script src="script.js?v=6"></script>
 </body>
 </html>
