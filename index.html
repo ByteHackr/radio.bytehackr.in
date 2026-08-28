@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0B0A1A">
+  <meta name="color-scheme" content="dark">
+  <title>ByteHackr’s Radio — सर्वम् अनित्यम्</title>
+  <meta name="description" content="ByteHackr’s Radio — Bengali & Hindi retro, KK & Arijit, Coke Studio, Devi Durga agomoni and the Bhagavad Gita. Sit back and listen.">
+  <meta name="author" content="ByteHackr">
+  <meta name="keywords" content="ByteHackr, internet radio, Bengali retro, Hindi retro, Bhagavad Gita, Durga, Hanuman, Shiva, Ganesha">
+  <link rel="canonical" href="https://relax.bytehackr.in/">
+  <meta property="og:site_name" content="ByteHackr’s Radio">
+  <meta property="og:title" content="ByteHackr’s Radio — सर्वम् अनित्यम्">
+  <meta property="og:description" content="Bengali & Hindi retro radio, devotionals, and the Bhagavad Gita. Sit back and listen.">
+  <meta property="og:url" content="https://relax.bytehackr.in/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_IN">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="ByteHackr’s Radio — सर्वम् अनित्यम्">
+  <meta name="twitter:description" content="Bengali & Hindi retro radio, devotionals, and the Bhagavad Gita. Sit back and listen.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📻</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Bengali:wght@500;600;700&family=Noto+Sans+Devanagari:wght@500;600;700&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=4">
+  <script>
+    // set hero background before first paint or it flashes
+    document.documentElement.style.setProperty("--hero-bg", "url('assets/IMG20241101171750.jpg')");
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="logo">📻 <span>ByteHackr’s Radio</span></div>
+    <nav class="site-nav">
+      <a href="#" id="navSongs">Playlist</a>
+      <a href="#" id="navPlaylists">Stations</a>
+      <a href="#about">About</a>
+      <!-- update this URL if you fork/rename the repo -->
+      <a class="github-link" href="https://github.com/ByteHackr/relax.bytehackr.in" target="_blank" rel="noopener" title="View source on GitHub" aria-label="View source code on GitHub">
+        <svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+      </a>
+    </nav>
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+    </button>
+    <div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+      <a href="#" id="mobileNavPlaylists">📻 Stations</a>
+      <a href="#" id="mobileNavSongs">🎵 Playlist</a>
+      <a href="#about" id="mobileNavAbout">ℹ️ About</a>
+      <a href="https://github.com/ByteHackr/relax.bytehackr.in" target="_blank" rel="noopener" id="mobileNavGithub">
+        <svg viewBox="0 0 16 16" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <p class="eyebrow">Bengali &amp; Hindi Retro Radio</p>
+        <h1 class="hero-title">
+          <span class="lang-sa">सर्वम् अनित्यम्</span>
+        </h1>
+
+        <div class="shloka-card" id="shlokaCard">
+          <p class="shloka-sanskrit" id="shlokaSanskrit">—</p>
+          <p class="shloka-english" id="shlokaEnglish">—</p>
+          <p class="shloka-ref" id="shlokaRef">—</p>
+        </div>
+
+        <aside class="clock-panel" aria-label="Current time in India">
+          <button class="shuffle-bg-btn" id="shuffleBgBtn" title="Shuffle background" aria-label="Shuffle background">🖼️</button>
+          <p class="clock-time">
+            <span class="clock-hms"><span id="clockTime">--:--</span><span class="clock-seconds" id="clockSeconds">:--</span><span class="clock-ampm" id="clockAmPm">--</span></span>
+          </p>
+          <p class="clock-date" id="clockDate">—</p>
+          <p class="clock-tz"><span class="clock-tz-dot"></span>INDIAN STANDARD TIME</p>
+          <p class="clock-onair">On Air • <span id="onAirLabel">Bengali Retro</span></p>
+        </aside>
+
+        <div class="station-select-wrap">
+          <label class="station-select-label" for="stationSelect">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Explore stations
+          </label>
+          <select id="stationSelect" aria-label="Choose a station">
+            <optgroup label="Music">
+              <option value="bengali" selected>বাংলা · Bengali Retro</option>
+              <option value="hindi">हिन्दी · Hindi Retro</option>
+              <option value="relax">Relax Hits (Hindi &amp; Bengali)</option>
+              <option value="english">English Hits</option>
+            </optgroup>
+            <optgroup label="Live radio">
+              <option value="livebengali">🎙️ Live · বাংলা</option>
+              <option value="livehindi">🎙️ Live · हिन्दी</option>
+              <option value="liveenglish">🌍 Live · English</option>
+            </optgroup>
+            <optgroup label="Devotionals">
+              <option value="durga">দুর্গা · Agomoni &amp; Mahalaya</option>
+              <option value="hanuman">हनुमान · Chalisa &amp; Bajrang Baan</option>
+              <option value="shiva">शिव · Tandav &amp; Mantras</option>
+              <option value="ganesha">गणेश · Aartis &amp; Bhajans</option>
+              <option value="gita">गीता · Shlokas &amp; Meaning</option>
+            </optgroup>
+          </select>
+          <div class="station-pills" id="stationPills" aria-label="Mobile station selection chips">
+            <div class="pill-row" data-group="music">
+              <button type="button" class="station-pill active" data-value="bengali">বাংলা • Bengali Retro</button>
+              <button type="button" class="station-pill" data-value="hindi">हिन्दी • Hindi Retro</button>
+              <button type="button" class="station-pill" data-value="relax">💖 Relax Hits</button>
+              <button type="button" class="station-pill" data-value="english">🎵 English Hits</button>
+            </div>
+            <div class="pill-row" data-group="live">
+              <button type="button" class="station-pill" data-value="livebengali">🎙️ বাংলা Live</button>
+              <button type="button" class="station-pill" data-value="livehindi">🎙️ हिन्दी Live</button>
+              <button type="button" class="station-pill" data-value="liveenglish">🌍 English Live</button>
+            </div>
+            <div class="pill-row" data-group="devotional">
+              <button type="button" class="station-pill" data-value="durga">🌺 Durga</button>
+              <button type="button" class="station-pill" data-value="hanuman">🚩 Hanuman</button>
+              <button type="button" class="station-pill" data-value="shiva">🔱 Shiva</button>
+              <button type="button" class="station-pill" data-value="ganesha">🪔 Ganesha</button>
+              <button type="button" class="station-pill" data-value="gita">📖 Gita</button>
+            </div>
+          </div>
+          <span class="station-select-hint">12 stations · music, live &amp; devotional</span>
+        </div>
+
+        <div class="status-row">
+          <div class="live-badge"><span class="dot"></span>LIVE • 24/7</div>
+          <div class="listeners-badge" title="Real visitor count — listeners in the last 10 minutes">
+            <span class="listeners-dot"></span>
+            <span id="listenersCount">—</span> listening now
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="player" id="player">
+    <div class="player-track">
+      <div class="artwork-wrap">
+        <img class="artwork" id="artwork" alt="" decoding="async">
+      </div>
+      <div class="track-info">
+        <p class="now-playing-label">
+          Now Playing
+          <span class="equalizer" id="equalizer"><i></i><i></i><i></i><i></i></span>
+        </p>
+        <p class="track-title" id="trackTitle">Pick a station & press play</p>
+        <p class="track-meta"><span id="trackArtist">—</span> <span class="dotsep">•</span> <span id="trackYear">—</span></p>
+      </div>
+      <button class="icon-btn playlist-toggle" id="playlistToggle" aria-label="See playlist">
+        <span class="playlist-toggle-icon" aria-hidden="true">☰</span>
+        <span class="playlist-toggle-text">See Playlist</span>
+      </button>
+    </div>
+
+    <div class="player-progress">
+      <span class="time" id="currentTime">00:00</span>
+      <div class="progress-bar" id="progressBar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <span class="time" id="durationTime">00:00</span>
+    </div>
+
+    <div class="player-controls">
+      <div class="transport">
+        <button class="icon-btn" id="prevBtn" aria-label="Previous song">⏮</button>
+        <button class="play-btn" id="playBtn" aria-label="Play">▶</button>
+        <button class="icon-btn" id="nextBtn" aria-label="Next song">⏭</button>
+        <button class="icon-btn shuffle-btn" id="shuffleBtn" title="Shuffle songs" aria-label="Shuffle songs">🔀</button>
+      </div>
+      <div class="volume-control">
+        <button class="icon-btn" id="muteBtn" aria-label="Mute">🔊</button>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+      </div>
+    </div>
+  </div>
+
+  <audio id="liveAudio" preload="none" aria-hidden="true"></audio>
+  <div id="ytMount" class="yt-mount" aria-hidden="true"></div>
+
+  <div class="overlay" id="overlay"></div>
+  <aside class="playlist-panel" id="playlistPanel" aria-hidden="true">
+    <div class="playlist-header">
+      <h2 id="playlistTitle">Station Playlist</h2>
+      <button class="icon-btn" id="closePlaylist" aria-label="Close playlist">✕</button>
+    </div>
+    <ul class="playlist-list" id="playlistList"></ul>
+  </aside>
+
+  <footer class="site-footer" id="about">
+    <p class="footer-logo">📻 ByteHackr’s Radio</p>
+    <p class="footer-sanskrit">सर्वम् अनित्यम् — all things pass, songs remain.</p>
+    <p class="footer-tagline">বাংলা • हिन्दी • Retro</p>
+    <p class="footer-note">Made for slow evenings and long memories.</p>
+    <p class="footer-note">Live FM streams via <a href="https://www.radio-browser.info/" target="_blank" rel="noopener">radio-browser.info</a>.</p>
+    <p class="footer-github">
+      <!-- update this URL if you fork/rename the repo -->
+      <a href="https://github.com/ByteHackr/relax.bytehackr.in" target="_blank" rel="noopener" title="View source on GitHub">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        View source on GitHub
+      </a>
+    </p>
+    <p class="footer-copy">© 2026 relax.bytehackr.in</p>
+  </footer>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="script.js?v=4"></script>
+</body>
+</html>
