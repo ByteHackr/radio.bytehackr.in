@@ -251,6 +251,8 @@ assert(readme.includes("--new"), "README.md should mention creating a station wi
 assert(readme.includes("radio-browser"), "README.md should document live radio via radio-browser");
 assert(readme.includes("radio.bytehackr.in"), "README.md should use the radio.bytehackr.in domain");
 assert(readme.includes("github.com/ByteHackr/radio.bytehackr.in"), "README.md should link to the radio.bytehackr.in GitHub repo");
+assert(!js.includes("LISTENERS_FALLBACK"), "listener count must not use a simulated fallback");
+assert(js.includes("abacus.jasoncameron.dev"), "listener count should use the Abacus API");
 
 console.log(`\n  stations     ${stationKeys.length}`);
 console.log(`  tracks       ${[...idCounts.values()].reduce((a, b) => a + b, 0)}`);

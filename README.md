@@ -6,7 +6,7 @@
 
 **सर्वम् अनित्यम्** — *all things pass, songs remain.*
 
-A static internet-radio site at [radio.bytehackr.in](https://radio.bytehackr.in). Live FM plus Bengali and Hindi retro, English hits, and devotionals — including a 100-track Bhagavad Gita playlist. Playback uses the YouTube IFrame API behind a custom player. The hero photo and a Gita shloka change with each song. A live IST clock sits in the hero. Listener count comes from the free Abacus API, with a simulated fallback.
+A static internet-radio site at [radio.bytehackr.in](https://radio.bytehackr.in). Live FM plus Bengali and Hindi retro, English hits, and devotionals — including a 100-track Bhagavad Gita playlist. Playback uses the YouTube IFrame API behind a custom player. The hero photo and a Gita shloka change with each song. A live IST clock sits in the hero. **Listening now** is a real count of unique browsers that pressed play in the last few minutes (Abacus). If that API is unreachable the badge stays as **—** — it never invents a number.
 
 [![ByteHackr’s Radio](docs/desktop.png)](https://radio.bytehackr.in)
 
@@ -55,6 +55,7 @@ Prev / next switches streams inside that live group. Seek and shuffle stay playl
 - Live IST clock with hours, minutes, small seconds, and AM/PM
 - Rotating background photos and Bhagavad Gita shlokas
 - Responsive layout for desktop, tablet, and phone
+- Real “listening now” count (unique players, not a simulated number)
 - No build step — HTML, CSS, and JS only
 
 ## Structure
@@ -190,7 +191,7 @@ Add an entry to the `SHLOKAS` array in `script.js`:
 | Colours | CSS variables at the top of `style.css` |
 | Clock size | `.clock-time` · seconds `.clock-seconds` · AM/PM `.clock-ampm` |
 | Player size | `.player` |
-| Listener counter | namespace / fallback range at the bottom of `script.js` |
+| Listener counter | Abacus namespace at the bottom of `script.js` (`radio.bytehackr.in`) |
 
 ## Deploy on GitHub Pages
 

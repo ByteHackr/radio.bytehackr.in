@@ -1202,6 +1202,7 @@ function onPlayerError() {
 function setPlayingUI(playing) {
   playBtn.textContent = playing ? "⏸" : "▶";
   equalizer.classList.toggle("playing", playing);
+  if (playing) pulseListenerCount();
 }
 
 function updateNowPlaying() {
@@ -1845,68 +1846,96 @@ document.addEventListener("keydown", (e) => {
 });
 
 // ---------- listener counter ----------
-// REAL "listening now": every visitor registers once per 5-minute window via
-// the free Abacus counter API (abacus.jasoncameron.dev, no key needed), and the
-// badge shows the real number of visitors in the last 10 minutes. If the API
-// can't be reached, it falls back to a gentle simulated drift so the badge is
-// never empty.
-const COUNTER_NS = "sarvam-anityam"; // counter namespace (change if you fork)
-const BUCKET_MS = 5 * 60 * 1000;     // presence window
-const LISTENERS_FALLBACK_MIN = 187;
-const LISTENERS_FALLBACK_MAX = 412;
-
+// Unique browsers that actually pressed play, in the last few minutes.
+// Each player hits Abacus once per 2-minute bucket (localStorage stops a
+// refresh from counting twice). The badge is the sum of the current bucket
+// and the two before it. No simulated fallback — if the API is down, "—".
+const COUNTER_NS = "radio.bytehackr.in";
+const BUCKET_MS = 2 * 60 * 1000;
+const BUCKETS_SHOWN = 3;
+const PRESENCE_STORE = "radio-listen-bucket";
 const listenersCountEl = document.getElementById("listenersCount");
+let listenerRefresh = null;
+let pendingRecord = false;
 
-function randomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+function isPlaybackActive() {
+  if (isLiveKey(currentStation) && liveAudio && !liveAudio.paused && !liveAudio.ended) {
+    return true;
+  }
+  try {
+    return Boolean(ytPlayer && window.YT && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING);
+  } catch (e) {
+    return false;
+  }
 }
 
-let listenerCount = randomInt(LISTENERS_FALLBACK_MIN, LISTENERS_FALLBACK_MAX);
-
 function bucketId(offset = 0) {
-  return `presence-${Math.floor(Date.now() / BUCKET_MS) - offset}`;
+  return `listen-${Math.floor(Date.now() / BUCKET_MS) - offset}`;
 }
 
 async function abacus(op, key) {
   const res = await fetch(`https://abacus.jasoncameron.dev/${op}/${COUNTER_NS}/${key}`);
-  return res.ok ? res.json() : null;
+  if (op === "get" && res.status === 404) return 0;
+  if (!res.ok) return null;
+  const data = await res.json();
+  const value = Number(data && data.value);
+  if (!Number.isFinite(value)) return op === "get" ? 0 : null;
+  return value;
 }
 
-// count this visitor once per window (localStorage prevents refresh inflation)
-function registerPresence() {
+async function registerPresence() {
+  if (!isPlaybackActive()) return;
   const current = bucketId(0);
   try {
-    if (localStorage.getItem("sa-presence") === current) return;
-    localStorage.setItem("sa-presence", current);
+    if (localStorage.getItem(PRESENCE_STORE) === current) return;
   } catch (e) {
-    /* storage unavailable (private mode) — hit anyway */
+    /* private mode — still hit once via in-memory skip below */
   }
-  abacus("hit", current).catch(() => {});
-}
-
-async function updateListenerCount() {
-  registerPresence();
+  const value = await abacus("hit", current);
+  if (value === null) return;
   try {
-    const [cur, prev] = await Promise.all([
-      abacus("get", bucketId(0)),
-      abacus("get", bucketId(1))
-    ]);
-    const real = ((cur && cur.value) || 0) + ((prev && prev.value) || 0);
-    if (real > 0) {
-      listenersCountEl.textContent = real.toLocaleString();
-      return;
-    }
+    localStorage.setItem(PRESENCE_STORE, current);
   } catch (e) {
-    /* API unreachable — fall back to drift below */
+    /* ignore */
   }
-
-  const step = randomInt(-12, 12); // drift instead of jump
-  listenerCount = Math.min(LISTENERS_FALLBACK_MAX, Math.max(LISTENERS_FALLBACK_MIN, listenerCount + step));
-  listenersCountEl.textContent = listenerCount.toLocaleString();
 }
 
-updateListenerCount();
-setInterval(updateListenerCount, 60 * 1000);
+function showListenerCount(n) {
+  if (!listenersCountEl) return;
+  listenersCountEl.textContent = n.toLocaleString();
+}
+
+async function refreshListenerCount(record) {
+  if (record) pendingRecord = true;
+  if (listenerRefresh) return listenerRefresh;
+  listenerRefresh = (async () => {
+    try {
+      do {
+        const shouldRecord = pendingRecord;
+        pendingRecord = false;
+        if (shouldRecord) await registerPresence();
+        const parts = await Promise.all(
+          Array.from({ length: BUCKETS_SHOWN }, (_, i) => abacus("get", bucketId(i)))
+        );
+        if (parts.some((v) => v === null)) break;
+        showListenerCount(parts.reduce((sum, v) => sum + v, 0));
+      } while (pendingRecord);
+    } catch (e) {
+      /* keep the last real number, or "—" if we never got one */
+    } finally {
+      listenerRefresh = null;
+      if (pendingRecord) refreshListenerCount(false);
+    }
+  })();
+  return listenerRefresh;
+}
+
+function pulseListenerCount() {
+  refreshListenerCount(true);
+}
+
+refreshListenerCount(false);
+setInterval(() => refreshListenerCount(isPlaybackActive()), 30 * 1000);
 
 // ---------- IST clock (12-hour format + date, always Asia/Kolkata) ----------
 
