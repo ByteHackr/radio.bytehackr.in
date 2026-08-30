@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#0B0A1A">
   <meta name="color-scheme" content="dark">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <!--
+    CSP notes:
+    - the inline hero-bg script is hash-pinned; if you edit it, recompute the
+      'sha256-…' below (scripts/ci-check.mjs will fail otherwise)
+    - media-src * blob: is needed for arbitrary live FM hosts + hls.js MSE
+    - connect-src * covers radio-browser, Abacus and YouTube oEmbed
+  -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-NTXTml6nGUqwASNDstkLuEGXRGRLYfAqPPLHFjd8WsU=' https://www.youtube.com https://s.ytimg.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://img.youtube.com https://i.ytimg.com; media-src * blob:; connect-src *; frame-src https://www.youtube.com; worker-src blob:; object-src 'none'; base-uri 'self'; form-action 'none'">
   <title>ByteHackr’s Radio — सर्वम् अनित्यम्</title>
   <meta name="description" content="ByteHackr’s Radio — Bengali & Hindi retro, KK & Arijit, Coke Studio, Devi Durga agomoni and the Bhagavad Gita. Sit back and listen.">
   <meta name="author" content="ByteHackr">
@@ -26,6 +35,7 @@
   <link rel="stylesheet" href="style.css?v=4">
   <script>
     // set hero background before first paint or it flashes
+    // (editing this? update the sha256 hash in the CSP meta tag above)
     document.documentElement.style.setProperty("--hero-bg", "url('assets/IMG20241101171750.jpg')");
   </script>
 </head>
@@ -198,6 +208,7 @@
     <p class="footer-tagline">বাংলা • हिन्दी • Retro</p>
     <p class="footer-note">Made for slow evenings and long memories.</p>
     <p class="footer-note">Live FM streams via <a href="https://www.radio-browser.info/" target="_blank" rel="noopener">radio-browser.info</a>.</p>
+    <p class="footer-note">No accounts, no ads, no tracking cookies — but YouTube, Google Fonts, and the radio streams do see your IP while you listen.</p>
     <p class="footer-github">
       <!-- update this URL if you fork/rename the repo -->
       <a href="https://github.com/ByteHackr/radio.bytehackr.in" target="_blank" rel="noopener" title="View source on GitHub">
@@ -209,6 +220,6 @@
   </footer>
 
   <script src="https://www.youtube.com/iframe_api"></script>
-  <script src="script.js?v=6"></script>
+  <script src="script.js?v=7"></script>
 </body>
 </html>

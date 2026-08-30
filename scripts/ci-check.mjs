@@ -4,6 +4,7 @@
  * No npm dependencies — Node 18+ is enough.
  */
 import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -258,6 +259,35 @@ assert(readme.includes("radio.bytehackr.in"), "README.md should use the radio.by
 assert(readme.includes("github.com/ByteHackr/radio.bytehackr.in"), "README.md should link to the radio.bytehackr.in GitHub repo");
 assert(!js.includes("LISTENERS_FALLBACK"), "listener count must not use a simulated fallback");
 assert(js.includes("abacus.jasoncameron.dev"), "listener count should use the Abacus API");
+
+// ---------- CSP / SRI ----------
+const cspMatch = html.match(/Content-Security-Policy"\s+content="([^"]+)"/);
+assert(!!cspMatch, "index.html is missing a Content-Security-Policy meta tag");
+assert(/name="referrer"\s+content="strict-origin-when-cross-origin"/.test(html), "index.html is missing the referrer meta tag");
+
+if (cspMatch) {
+  // every inline <script> must be hash-pinned in the CSP, or it will be blocked
+  const inlineScripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+  assert(inlineScripts.length > 0, "expected the inline hero-bg script in index.html");
+  for (const [, body] of inlineScripts) {
+    const hash = "sha256-" + createHash("sha256").update(body).digest("base64");
+    assert(
+      cspMatch[1].includes(hash),
+      `inline script hash ${hash} is missing from the CSP — recompute the sha256 in index.html after editing the inline script`
+    );
+  }
+  // the CSP must keep allowing the third parties the player depends on
+  for (const need of ["'self'", "https://www.youtube.com", "media-src", "blob:"]) {
+    assert(cspMatch[1].includes(need), `CSP is missing required entry: ${need}`);
+  }
+}
+
+// hls.js CDN fallbacks must stay SRI-pinned (vendor/ is tried first, but the
+// CDN fallbacks run cross-origin and would be an injection vector without it)
+assert(
+  js.includes("cdn.jsdelivr.net/npm/hls.js") && js.includes("HLS_SRI") && js.includes("sha384-"),
+  "hls.js CDN fallbacks in script.js should be SRI-pinned via HLS_SRI"
+);
 
 console.log(`\n  stations     ${stationKeys.length}`);
 console.log(`  tracks       ${[...idCounts.values()].reduce((a, b) => a + b, 0)}`);

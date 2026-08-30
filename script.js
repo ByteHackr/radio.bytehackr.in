@@ -894,16 +894,20 @@ function stopYouTube() {
 
 function loadHlsScript() {
   if (window.Hls) return Promise.resolve(window.Hls);
+  // vendor/ is tried first; the CDN fallbacks are SRI-pinned so a compromised
+  // CDN cannot inject code. Both CDNs serve identical bytes for hls.js@1.5.18.
+  const HLS_SRI =
+    "sha384-R2JqybiEexSXz60H6Zz28MdsqWWnMQlP+NDb7nIhDHWxx6sM7Otw7OWCq9EBCPsz";
   const sources = [
-    "vendor/hls.min.js?v=1.5.18",
-    "https://cdn.jsdelivr.net/npm/hls.js@1.5.18/dist/hls.min.js",
-    "https://unpkg.com/hls.js@1.5.18/dist/hls.min.js"
+    { src: "vendor/hls.min.js?v=1.5.18" },
+    { src: "https://cdn.jsdelivr.net/npm/hls.js@1.5.18/dist/hls.min.js", integrity: HLS_SRI },
+    { src: "https://unpkg.com/hls.js@1.5.18/dist/hls.min.js", integrity: HLS_SRI }
   ];
   return (async () => {
     let lastErr;
-    for (const src of sources) {
+    for (const source of sources) {
       try {
-        return await loadScriptOnce(src);
+        return await loadScriptOnce(source);
       } catch (err) {
         lastErr = err;
       }
@@ -912,11 +916,15 @@ function loadHlsScript() {
   })();
 }
 
-function loadScriptOnce(src) {
+function loadScriptOnce({ src, integrity }) {
   return new Promise((resolve, reject) => {
     const s = document.createElement("script");
     s.src = src;
     s.async = true;
+    if (integrity) {
+      s.integrity = integrity;
+      s.crossOrigin = "anonymous"; // required by browsers for SRI on CDN scripts
+    }
     s.dataset.hls = "1";
     s.onload = () => (window.Hls ? resolve(window.Hls) : reject(new Error("hls.js missing")));
     s.onerror = () => reject(new Error("hls.js failed to load"));
